@@ -1,9 +1,7 @@
-function crearCalendario() {
-	const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre"];
-	const dayNames = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
-	const catNode = document.getElementById('categorias');
-    const selCatNode = document.getElementById('selCat');
-};
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre"];
+const dayNames = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
+const catNode = document.getElementById('categorias');
+const selCatNode = document.getElementById('selCat');
 
 function getDaysInMonth(month, year) {
     let date = new Date(year, month, 1);
@@ -80,7 +78,7 @@ function buildYearCalendar(el, year) {
     // dibujaCategorias();
 
     months.forEach(function(a, b) {
-        let $monthNode = this.buildMonth(b, year, opts);
+        var $monthNode = buildMonth(b, year, opts);
         el.appendChild($monthNode);
     });
 
@@ -101,7 +99,7 @@ function buildMonthsInRange (el, opts, startDate, limit) {
         });
     }
 
-    
+
 function buildMonth(monthNum, year, opts) {
         //if (monthNum === undefined || year === undefined) return "something is missing";
         let _this = this;
@@ -152,10 +150,10 @@ function buildMonth(monthNum, year, opts) {
             let today = new Date(new Date().setHours(0, 0, 0, 0));
             let $dayNode = document.createElement('div');
             $dayNode.classList.add('day');
-            $dayNode.setAttribute("numero", numDia);
+        //    $dayNode.setAttribute("numero", numDia);
 
         //	$dayNode.setAttribute("categoria", anio[numDia]);
-            numDia++;
+        //    numDia++;
 
             //anio.push(" ");
             
@@ -215,6 +213,11 @@ function buildMonth(monthNum, year, opts) {
     }
 }
 
-console.log(getDaysInMonth(0, 2021));
-console.log(getMonthsInYear(2021));
+//console.log(getDaysInMonth(0, 2021));
+//console.log(getMonthsInYear(2021));
+
+var calendarioRef = document.getElementById("calendario");
+var currentYear = new Date().getFullYear();
+//var calendario = new crearCalendario();
+buildYearCalendar(calendarioRef, currentYear);
 
