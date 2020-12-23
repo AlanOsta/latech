@@ -1,47 +1,37 @@
+/* Basado en una libreria de Jim Camut */
+/* https://github.com/jimcamut/calendarize */
+
 const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre"];
 const dayNames = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
 const catNode = document.getElementById('categorias');
 const selCatNode = document.getElementById('selCat');
 
-function getDaysInMonth(month, year) {
-    let date = new Date(year, month, 1);
-    let days = [];
-    while (date.getMonth() === month) {
-        days.push(new Date(date));
-        date.setDate(date.getDate() + 1);
+function getDaysInMonth(mes, anio) {
+    let fecha = new Date(anio, mes, 1);
+    let dias = [];
+    while (fecha.getMonth() === mes) {
+        dias.push(new Date(fecha));
+        fecha.setDate(fecha.getDate() + 1);
     }
-    return days;
+    return dias;
 }
 
-function getMonthsInYear(year) {
-    let date = new Date(year, 0, 1);
-    let months = [];
-    let monthCount = 0;
-    while (monthCount < 12) {
-        months.push(new Date(date));
-        date.setMonth(date.getMonth() + 1);
-        monthCount++;
+function getMonthsInYear(anio) {
+    let fecha = new Date(anio, 0, 1);
+    let meses = [];
+    let mesCont = 0;
+    while (mesCont < 12) {
+        meses.push(new Date(fecha));
+        fecha.setMonth(fecha.getMonth() + 1);
+        mesCont++;
     }
-    return months;
-}
-
-function getMonthsInRange(startDate, endDate) {
-    let start = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-    let end = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
-    let months = [];
-    let monthCount = 0;
-    while (start <= end) {
-        months.push( new Date(start) );
-        start.setMonth(start.getMonth() + 1);
-        monthCount++;
-    }
-    return months;
+    return meses;
 }
 
 // Create a full 12-month calendar
-function buildYearCalendar(el, year) {
+function buildYearCalendar(ref, anio) {
     // cargaAnio();
-    let months = this.getMonthsInYear(year);
+    let meses = getMonthsInYear(anio);
 /////////////////////////////////        opts   /////////////////////////////////////////////////
     let opts = {
         showMonth: true,
@@ -77,28 +67,10 @@ function buildYearCalendar(el, year) {
 
     // dibujaCategorias();
 
-    months.forEach(function(a, b) {
-        var $monthNode = buildMonth(b, year, opts);
-        el.appendChild($monthNode);
+    meses.forEach(function(a, b) {
+        var $monthNode = buildMonth(b, anio, opts);
+        ref.appendChild($monthNode);
     });
-
-function buildMonthsInRange (el, opts, startDate, limit) {
-        
-        let endDate = new Date( new Date().setDate(startDate.getDate() + limit) );
-        let months = this.getMonthsInRange(startDate, endDate);
-        
-        opts = opts  || {};
-        opts.limitDate = endDate || false;
-        if (opts.reverse) months = months.reverse();
-
-        months.forEach(function(a, b) {
-            let month = a.getMonth();
-            let year = a.getFullYear();
-            let $monthNode = _this.buildMonth(month, year, opts);
-            el.appendChild($monthNode);
-        });
-    }
-
 
 function buildMonth(monthNum, year, opts) {
         //if (monthNum === undefined || year === undefined) return "something is missing";
