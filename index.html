@@ -21,11 +21,25 @@
         <div id="calendario"></div>
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
 
         <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
+            https://firebase.google.com/docs/web/setup#available-libraries -->
         <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-firestore.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAMpt68HeGhIvRJnUx80eRqDL2u_QswPtA",
+            authDomain: "latech-dev.firebaseapp.com",
+            projectId: "latech-dev",
+            storageBucket: "latech-dev.appspot.com",
+            messagingSenderId: "991587659931",
+            appId: "1:991587659931:web:9e7dc989629a10b383d63e"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        </script>
 
         <script type="text/javascript" src="./calendario.js"></script>       
 
