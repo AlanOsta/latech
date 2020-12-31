@@ -23,18 +23,18 @@ const cargaAnio = () => {
     var docRef = db.collection("calendario").doc("anio");
     docRef.get().then(function(doc) {
     anioFB = doc.data().anioFB;						// Fetch del array completo                                                         
-    if ( anioFB.length != daysInYear()){            // Incializa el año poniendo todos sus dias en " "
+    if ( anioFB.length != daysInYear() ){            // Incializa el array del año poniendo todos sus dias en " "
         anioFB = [];
         for (let i = 0; i < daysInYear(); i++){
             anioFB.push(" ");
         };
         console.log("Inicializando base de datos");
         salvaAnio(anioFB);
-    } else {
+    };
         categorias = [...new Set(anioFB)];			    // Filtra solo valores unicos de categorias incluida " "
         categorias.splice(categorias.indexOf(" "),1);	// Saco el " " del array
         dibujaCategorias();
-    };
+    
     }).catch(function(error) {
         console.log("Error al obtener el documento:", error);
     });
