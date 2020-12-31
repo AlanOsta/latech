@@ -5,18 +5,36 @@ const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Juli
 const dayNames = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
 const catNode = document.getElementById('categorias');
 const selCatNode = document.getElementById('selCat');
+const regEx = /^$|\s+/;
 const db = firebase.firestore();
 let numDia = 0;
 let catSeleccionada = " ";
 let anioFB = [];
+let categoria = [];
+
+
+// Devuele la cantidad de dias en el año actual
+const daysInYear = anio => {
+    esBisiesto = new Date(new Date().getFullYear(), 1, 29).getDate() === 29;  
+    return esBisiesto ? 366 : 365;
+};
 
 const cargaAnio = () => {
     var docRef = db.collection("calendario").doc("anio");
     docRef.get().then(function(doc) {
-            anioFB = doc.data().anioFB;						// Fetch del array completo
-            categorias = [...new Set(anioFB)];			    // Filtra solo valores unicos de categorias incluida " "
-            categorias.splice(categorias.indexOf(" "),1);	// Saco el " " del array
-            dibujaCategorias();
+    anioFB = doc.data().anioFB;						// Fetch del array completo                                                         
+    if ( anioFB.length != daysInYear()){            // Incializa el año poniendo todos sus dias en " "
+        anioFB = [];
+        for (let i = 0; i < daysInYear(); i++){
+            anioFB.push(" ");
+        };
+        console.log("Inicializando base de datos");
+        salvaAnio(anioFB);
+    } else {
+        categorias = [...new Set(anioFB)];			    // Filtra solo valores unicos de categorias incluida " "
+        categorias.splice(categorias.indexOf(" "),1);	// Saco el " " del array
+        dibujaCategorias();
+    };
     }).catch(function(error) {
         console.log("Error al obtener el documento:", error);
     });
@@ -53,13 +71,17 @@ function catClickHandler(e) {
     let calendario = document.getElementById("calendario");
     let daysColl = calendario.getElementsByClassName("day"); // Colleccion de todos los dias
 
+    if (!nameCat) {return};
+    
     if (nameCat == "addCat"){
-        if (nameCat == " "){
-            alert("La categoria no puede empezar por un espacio");
+        if (regEx.test(inputCatValue)){
+            alert("La categoria no puede contener espacios o estar vacia");
+            return;
         }else {
             categorias.push(inputCatValue);
-            console.log(categorias);
+            nameCat = inputCatValue;
             dibujaCategorias();
+            return;
         };
     };
 
@@ -73,8 +95,7 @@ function catClickHandler(e) {
                 daysColl[h].removeAttribute("categoria");
                 daysColl[h].setAttribute("categoria"," ");
                 daysColl[h].classList.remove("seleccionado");
-                anioFB[h] = " ";
-                console.log(anioFB);
+                anioFB[h] = " ";                
             }						
         }
         salvaAnio(anioFB);
@@ -152,8 +173,6 @@ function buildYearCalendar(ref, anio) {
             // Si hay una categoria seleccionada
             if (catSeleccionada != " "){
                 // Si ya tiene la misma categoria seleccionada
-                console.log("catDay: "+catDay);
-                console.log("catSeleccionada: "+catSeleccionada);
                 if (catDay == catSeleccionada){
                     // Borra la categoria
                     e.target.classList.remove("seleccionado");
@@ -162,8 +181,7 @@ function buildYearCalendar(ref, anio) {
                 }else {
                     e.target.classList.add('seleccionado');
                     e.target.setAttribute("categoria", catSeleccionada);
-                    catArrayHandler(dayNum, catSeleccionada);
-                    console.dir(dayNum);
+                    catArrayHandler(dayNum, catSeleccionada);                    
                 }
             
             } else {alert("no hay categoria seleccionada")};

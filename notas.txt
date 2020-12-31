@@ -1,0 +1,10 @@
+Hay un bug cuando el anio no esta inicializado y creo una categoria.
+el resto parece funcionar correctamente
+
+seria interesante que al agregar una categoria esta se seleccione automaticamente, tal vez creando un evento click.
+
+De la misma forma al acceder a la app que se seleccione automaticamente la primera categoria
+
+Tambien me gustaria agregar un estilo para todos los dias que tengan una categoria asignada.
+
+
