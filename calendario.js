@@ -22,8 +22,8 @@ const daysInYear = anio => {
 const cargaAnio = () => {
     var docRef = db.collection("calendario").doc("anio");
     docRef.get().then(function(doc) {
-    anioFB = doc.data().anioFB;						// Fetch del array completo                                                         
-    if ( anioFB.length != daysInYear() ){            // Incializa el array del año poniendo todos sus dias en " "
+    anioFB = doc.data().anioFB;						 // Fetch del array completo                                                         
+    if ( anioFB.length != daysInYear() ){            // Incializa el array del año poniendo todos sus dias en " " si hay diferencia de dias entre el año real y el largo del array
         anioFB = [];
         for (let i = 0; i < daysInYear(); i++){
             anioFB.push(" ");
@@ -69,7 +69,7 @@ function catClickHandler(e) {
     let buttonNodes = document.getElementsByClassName("buttonCat");
     let inputCatValue = document.getElementById("addCatValue").value
     let calendario = document.getElementById("calendario");
-    let daysColl = calendario.getElementsByClassName("day"); // Colleccion de todos los dias
+    let daysColl = calendario.getElementsByClassName("day"); // Coleccion de todos los nodos de los dias del año
 
     if (!nameCat) {return};
     
@@ -118,14 +118,23 @@ function catClickHandler(e) {
         };
 
         // Reasigna clase "seleccionado" de acuerdo a la categoria seleccionada
-        for (let j = 0; j < daysColl.length; j++){
-            if (anioFB[j] == catSeleccionada){		// Compara el array con la categoria seleccionada
-                daysColl[j].classList.add("seleccionado");
-                daysColl[j].setAttribute("categoria",anioFB[j]);
+        for (let i = 0; i < daysColl.length; i++){
+            // Agrega la clase "seleccionado" 
+            if (anioFB[i] == catSeleccionada){		// Compara el array con la categoria seleccionada
+                daysColl[i].classList.add("seleccionado");
+                daysColl[i].setAttribute("categoria",anioFB[i]);
             }else {
-                daysColl[j].classList.remove("seleccionado");
-                daysColl[j].setAttribute("categoria",anioFB[j]);
+                daysColl[i].classList.remove("seleccionado");
+                daysColl[i].setAttribute("categoria",anioFB[i]);
             };
+            // Agrega la clase "conTarea" para indicar los dias que tienen tarea independientemente de la categoria
+            if (anioFB[i] != " "){
+                daysColl[i].classList.add("conTarea");
+            }else {
+                daysColl[i].classList.remove("conTarea");
+            }
+
+
         };
 };
 
@@ -172,15 +181,16 @@ function buildYearCalendar(ref, anio) {
 
             // Si hay una categoria seleccionada
             if (catSeleccionada != " "){
+              //  e.classList.add("conTarea");
                 // Si ya tiene la misma categoria seleccionada
                 if (catDay == catSeleccionada){
                     // Borra la categoria
-                    e.target.classList.remove("seleccionado");
+                    e.target.classList.remove("seleccionado", "conTarea");
                     e.target.setAttribute("categoria", " ");
                     catArrayHandler(dayNum, " ");
                 }else {
-                    e.target.classList.add('seleccionado');
-                    e.target.setAttribute("categoria", catSeleccionada);
+                    e.target.classList.add("seleccionado", "conTarea");
+                    e.target.setAttribute("categoria", catSeleccionada);                    
                     catArrayHandler(dayNum, catSeleccionada);                    
                 }
             
@@ -236,22 +246,16 @@ function buildMonth(monthNum, year, opts) {
             $monthNode.appendChild($dayNode);
         }
 
-        // Place a day for each day of the month
+        // Agrega cada uno de los dias del mes
         daysInMonth.forEach(function(c, d) {
             let $dayNode = document.createElement('div');
             $dayNode.classList.add('day');
             $dayNode.setAttribute("numero", numDia);
-
         	$dayNode.setAttribute("categoria", anioFB[numDia]);
             numDia++;
-
-            // Agregar condicion de inicializacion del array del año
-            //anioFB.push(" ");
-            
-            
             $dayNode.innerText = (d + 1);
-            let dow = new Date(c).getDay();
 
+            let dow = new Date(c).getDay();
             if (dow === 0 || dow === 6) $dayNode.classList.add('weekend');
             if (opts.clickHandler && !$dayNode.classList.contains('dummy-day')) {
                 function handleEvent(e) {

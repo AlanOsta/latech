@@ -24,7 +24,7 @@ html, body {
 
 .day, .dow, .dummy-day {
 	display: inline-block;
-	width: 12.7864%;
+	width: 12.7864%;	
 	float: left;
 	text-align: center;
 	margin-right: 1.5%;
@@ -86,5 +86,5 @@ div#categorias {
 }
 
 .conTarea {
-	border-bottom:1px solid #f00;
+	box-shadow: inset 0 0 0 1px #ffcc99;		
 }
