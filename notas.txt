@@ -1,3 +1,2 @@
-- Seria interesante que al agregar una categoria esta se seleccione automaticamente, tal vez creando un evento click.
+- Agregar "pantalla de carga" mientras se hace el fetch de FB
 
-- De la misma forma al acceder a la app que se seleccione automaticamente la primera categoria

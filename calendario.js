@@ -33,8 +33,8 @@ const cargaAnio = () => {
     };
         categorias = [...new Set(anioFB)];			    // Filtra solo valores unicos de categorias incluida " "
         categorias.splice(categorias.indexOf(" "),1);	// Saco el " " del array
-        dibujaCategorias();
-    
+        dibujaCategorias("primero");
+
     }).catch(function(error) {
         console.log("Error al obtener el documento:", error);
     });
@@ -42,7 +42,7 @@ const cargaAnio = () => {
 
 const salvaAnio = (anioFB) => db.collection("calendario").doc("anio").set({anioFB});
 
-function dibujaCategorias() {
+function dibujaCategorias(elemClick) {
     while (selCat.firstChild) {selCat.removeChild(selCat.firstChild)};
     let tituloCategorias = document.createElement("h4");
     tituloCategorias.innerText = "Seleccione una categoria: ";
@@ -54,11 +54,17 @@ function dibujaCategorias() {
             buttonCat.classList.add("buttonCat");
             buttonCat.type = "submit";
             buttonCat.name = categorias[i];
+            buttonCat.id = categorias[i];
             buttonCat.innerText = categorias[i];
             selCatNode.appendChild(buttonCat);
         };
     };
-    catNode.addEventListener("click", catClickHandler);						
+    catNode.addEventListener("click", catClickHandler);
+
+    // Genera evento click para seleccionar la primera o la ultima categoria
+    if (categorias.length > 0){
+        elemClick == "primero" ? document.getElementById(categorias[0]).click() : document.getElementById(categorias[categorias.length-1]).click();
+    };					
 };
 
 // Categorias ClickHandler
@@ -69,7 +75,7 @@ function catClickHandler(e) {
     let buttonNodes = document.getElementsByClassName("buttonCat");
     let inputCatValue = document.getElementById("addCatValue").value
     let calendario = document.getElementById("calendario");
-    let daysColl = calendario.getElementsByClassName("day"); // Coleccion de todos los nodos de los dias del año
+    let daysColl = calendario.getElementsByClassName("day");
 
     if (!nameCat) {return};
     
@@ -80,14 +86,13 @@ function catClickHandler(e) {
         }else {
             categorias.push(inputCatValue);
             nameCat = inputCatValue;
-            dibujaCategorias();
+            dibujaCategorias("ultimo");
             return;
         };
     };
 
     if (nameCat == "delCat"){
         categorias.splice(categorias.indexOf(inputCatValue),1);	// Borro la categoria del array de categorias
-        dibujaCategorias();
         for (let h = 0; h < daysColl.length; h++){
             let dayCatValue = daysColl[h].getAttribute("categoria");
 
@@ -98,7 +103,9 @@ function catClickHandler(e) {
                 anioFB[h] = " ";                
             }						
         }
+        dibujaCategorias("ultimo");
         salvaAnio(anioFB);
+        return;
     };
 
         // Manejo de clase "seleccionado" para los botones de categorias
