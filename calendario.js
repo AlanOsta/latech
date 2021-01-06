@@ -21,8 +21,8 @@ const daysInYear = anio => {
 
 const cargaAnio = () => {
     var docRef = db.collection("calendario").doc("anio");
-    docRef.get().then(function(doc) {
-    anioFB = doc.data().anioFB;						 // Fetch del array completo                                                         
+    docRef.get().then(function(doc) {                // Fetch del array completo 
+    anioFB = doc.data().anioFB;						 
     if ( anioFB.length != daysInYear() ){            // Incializa el array del año poniendo todos sus dias en " " si hay diferencia de dias entre el año real y el largo del array
         anioFB = [];
         for (let i = 0; i < daysInYear(); i++){
@@ -42,8 +42,17 @@ const cargaAnio = () => {
 
 const salvaAnio = (anioFB) => db.collection("calendario").doc("anio").set({anioFB});
 
+function loader(){
+    let loaderTexto = document.createElement("h4");
+    let loader = document.createElement("div");
+    loaderTexto.innerText = "Cargando categorias... ";
+    loaderTexto.classList.add ("titulo");
+    selCatNode.appendChild(loaderTexto);
+
+};
+
 function dibujaCategorias(elemClick) {
-    while (selCat.firstChild) {selCat.removeChild(selCat.firstChild)};
+    while (selCatNode.firstChild) {selCatNode.removeChild(selCatNode.firstChild)};
     let tituloCategorias = document.createElement("h4");
     tituloCategorias.innerText = "Seleccione una categoria: ";
     tituloCategorias.classList.add ("titulo");
@@ -178,6 +187,7 @@ function getMonthsInYear(anio) {
 
 // Crea el calendario completo de 12 meses
 function buildYearCalendar(ref, anio) {
+    loader();
     cargaAnio();
     let meses = getMonthsInYear(anio);
     let opts = {
@@ -206,7 +216,7 @@ function buildYearCalendar(ref, anio) {
         }
     };
 
-    dibujaCategorias();
+    //dibujaCategorias();
 
     meses.forEach(function(a, b) {
         var $monthNode = buildMonth(b, anio, opts);
@@ -296,7 +306,7 @@ function buildMonth(monthNum, year, opts) {
 }
 
 
-let calendarioRef = document.getElementById("calendario");
+let calendarioNodo = document.getElementById("calendario");
 let currentYear = new Date().getFullYear();
-buildYearCalendar(calendarioRef, currentYear);
+buildYearCalendar(calendarioNodo, currentYear);
 
