@@ -108,7 +108,7 @@ function catClickHandler(e) {
             if (dayCatValue == inputCatValue) {
                 daysColl[h].removeAttribute("categoria");
                 daysColl[h].setAttribute("categoria"," ");
-                daysColl[h].classList.remove("seleccionado");
+                daysColl[h].classList.remove("seleccionado","conTarea");
                 anioFB[h] = " ";                
             }						
         }
@@ -198,7 +198,7 @@ function buildYearCalendar(ref, anio) {
 
             // Si hay una categoria seleccionada
             if (catSeleccionada != " "){
-              //  e.classList.add("conTarea");
+                //  e.classList.add("conTarea");
                 // Si ya tiene la misma categoria seleccionada
                 if (catDay == catSeleccionada){
                     // Borra la categoria
@@ -215,8 +215,6 @@ function buildYearCalendar(ref, anio) {
             salvaAnio(anioFB);
         }
     };
-
-    //dibujaCategorias();
 
     meses.forEach(function(a, b) {
         var $monthNode = buildMonth(b, anio, opts);
